@@ -40,13 +40,13 @@ public class FanPage7DaysFetcher extends FacebookFetchActor {
 
 		ds.setDriverClassName("com.mysql.jdbc.Driver");
 
-		String host = "127.0.0.1";
+		String host = ConfigResource.INSTANCE.getString("mysql.host");
 
 		String url = "jdbc:mysql://" + host + "/fanpagespider";
 		ds.setUrl(url);
-		String user = "root";
+		String user = ConfigResource.INSTANCE.getString("mysql.user");
 		ds.setUsername(user);
-		ds.setPassword("280884");
+		ds.setPassword(ConfigResource.INSTANCE.getString("mysql.pass"));
 		datasource = (BasicDataSource) ds;
 	}
 
