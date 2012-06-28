@@ -29,6 +29,7 @@ import org.apache.wicket.request.cycle.RequestCycle;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.util.string.StringValue;
 import org.joda.time.DateTime;
+import org.joda.time.LocalDate;
 import org.json.JSONArray;
 
 import com.restfb.util.DateUtils;
@@ -37,8 +38,10 @@ public class Analytics extends WebPage {
 	private static final long serialVersionUID = 1L;
 
 	private static BasicDataSource datasource;
-	
+
 	public static Map SITEMAP = new HashMap();
+
+	private static String DATE_PATTERN = "dd/MM/yyyy";
 
 	static {
 		BasicDataSource ds = new BasicDataSource();
@@ -57,28 +60,28 @@ public class Analytics extends WebPage {
 
 	public Analytics(final PageParameters parameters) {
 		int indexedCount = parameters.getIndexedCount();
-		
+
 		String chartId = "";
-		DateTime now = null;
-		DateTime lastWeek = null;
-		if(indexedCount == 0){
+		DateTime toDate = null;
+		DateTime fromDate = null;
+		if (indexedCount == 0) {
 			chartId = "celularesArgentina";
-		    now = new DateTime();
-			lastWeek = now.minusWeeks(1);			
-		} else if(indexedCount == 1){
+			toDate = new DateTime();
+			fromDate = toDate.minusWeeks(1);
+		} else if (indexedCount == 1) {
 			chartId = parameters.get(0).toString();
-			now = new DateTime();
-			lastWeek = now.minusWeeks(1);
-		} else if (indexedCount == 3){
+			toDate = new DateTime();
+			fromDate = toDate.minusWeeks(1);
+		} else if (indexedCount == 3) {
 			chartId = parameters.get(0).toString();
 			String from = parameters.get(1).toString();
 			String to = parameters.get(2).toString();
-			now = new DateTime(Long.valueOf(to));
-			lastWeek = new DateTime(Long.valueOf(from));
+			toDate = new DateTime(Long.valueOf(to));
+			fromDate = new DateTime(Long.valueOf(from));
 		} else {
 			throw new RuntimeException("Error in parameters");
 		}
-		
+
 		Connection conn = null;
 		PreparedStatement engagementWinnerQuery = null;
 		ResultSet executeQueryForWinner = null;
@@ -86,18 +89,25 @@ public class Analytics extends WebPage {
 		ResultSet executeQueryForCharts = null;
 		ResultSet postsIterator = null;
 		this.buildChartSelection(chartId);
+		this.createNavigatorLink(chartId, toDate, fromDate);
+
+		String currentDate = fromDate.toString(DATE_PATTERN) + " - "
+				+ toDate.toString(DATE_PATTERN);
+		this.add(new Label("currentdate", currentDate));
 		try {
 			conn = datasource.getConnection();
-			String sql = "select page_name, sum(engagement) AS sumEngagement, " +
-					"(SELECT charts.page_name FROM charts where `facebook_page_id` = posts.page_name) AS fbname " +
-					"from posts where from_id IN ( SELECT facebook_page_id from charts where chart_id = ? ) " +
-							"AND created_time BETWEEN ? AND ? group by page_name order by sumEngagement DESC";
+			String sql = "select page_name, sum(engagement) AS sumEngagement, "
+					+ "(SELECT charts.page_name FROM charts where `facebook_page_id` = posts.page_name) AS fbname "
+					+ "from posts where from_id IN ( SELECT facebook_page_id from charts where chart_id = ? ) "
+					+ "AND created_time BETWEEN ? AND ? group by page_name order by sumEngagement DESC";
 			engagementWinnerQuery = conn.prepareStatement(sql);
 			engagementWinnerQuery.setString(1, chartId);
-			engagementWinnerQuery.setTimestamp(2, new Timestamp(lastWeek.toDate().getTime()));
-			engagementWinnerQuery.setTimestamp(3, new Timestamp(now.toDate().getTime()));
+			engagementWinnerQuery.setTimestamp(2, new Timestamp(fromDate
+					.toDate().getTime()));
+			engagementWinnerQuery.setTimestamp(3, new Timestamp(toDate.toDate()
+					.getTime()));
 			executeQueryForWinner = engagementWinnerQuery.executeQuery();
-			
+
 			ArrayList<Properties> arrayList = new ArrayList<Properties>();
 
 			JSONArray namesChartJS = new JSONArray();
@@ -149,18 +159,20 @@ public class Analytics extends WebPage {
 			while (executeQueryForCharts.next()) {
 				String facebookId = executeQueryForCharts
 						.getString("facebook_page_id");
-				description = executeQueryForCharts
-						.getString("description");
+				description = executeQueryForCharts.getString("description");
 				String pageName = executeQueryForCharts.getString("page_name");
 
 				ArrayList<Properties> postsForChartItem = new ArrayList<Properties>();
-				
+
 				String askMostInfluentialPosts = "select id,created_time,shares,likes,comments,engagement,message from posts where page_name = "
 						+ "? AND created_time BETWEEN ? AND ? order by engagement DESC LIMIT 5";
-				PreparedStatement askMostInfl = conn.prepareStatement(askMostInfluentialPosts);
+				PreparedStatement askMostInfl = conn
+						.prepareStatement(askMostInfluentialPosts);
 				askMostInfl.setString(1, facebookId);
-				askMostInfl.setTimestamp(2, new Timestamp(lastWeek.toDate().getTime()));
-				askMostInfl.setTimestamp(3, new Timestamp(now.toDate().getTime()));
+				askMostInfl.setTimestamp(2, new Timestamp(fromDate.toDate()
+						.getTime()));
+				askMostInfl.setTimestamp(3, new Timestamp(toDate.toDate()
+						.getTime()));
 
 				postsIterator = askMostInfl.executeQuery();
 				while (postsIterator.next()) {
@@ -182,7 +194,6 @@ public class Analytics extends WebPage {
 			this.add(new Label("description", description));
 			this.add(new Label("title", description));
 
-			
 			this.add(new ListView<String>("chartitems", new ArrayList(chartItem
 					.keySet())) {
 
@@ -195,6 +206,7 @@ public class Analytics extends WebPage {
 							.get(itemName);
 					item.add(new ListView<Properties>("items", l) {
 						private int i = 1;
+
 						@Override
 						protected void populateItem(ListItem<Properties> item) {
 							Properties p = item.getModelObject();
@@ -212,12 +224,13 @@ public class Analytics extends WebPage {
 
 							item.add(new Label("message", p
 									.getProperty("message")));
-							
+
 							Date createdTime = (Date) p.get("created_time");
-							SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+							SimpleDateFormat sdf = new SimpleDateFormat(
+									DATE_PATTERN);
 							String createdTimeStr = sdf.format(createdTime);
-							item.add(new Label("date",createdTimeStr));
-							item.add(new Label("index",""+i));
+							item.add(new Label("date", createdTimeStr));
+							item.add(new Label("index", "" + i));
 							i++;
 						}
 					});
@@ -237,14 +250,29 @@ public class Analytics extends WebPage {
 			DbUtils.closeQuietly(conn);
 		}
 
-	
-		String fullUrl = "http://zoxial.com/Analytics/" + chartId + "/" + lastWeek.getMillis() + "/" + now.getMillis();
+		String fullUrl = "http://zoxial.com/Analytics/" + chartId + "/"
+				+ fromDate.getMillis() + "/" + toDate.getMillis();
 		Label label = new Label("text", fullUrl);
 		ExternalLink shareLink = new ExternalLink("sharelink", fullUrl);
 		shareLink.add(label);
 		this.add(shareLink);
 	}
 
+	private void createNavigatorLink(String chartId, DateTime toDate, DateTime fromDate) {
+		DateTime date = toDate;
+		DateTime endPreviousWeek = date.minusDays(date.getDayOfWeek());
+		DateTime startOfPreviousWeek = endPreviousWeek.minusDays(6);		
+		
+		String lastWeekUrl = calculateCurrentHostUrl() + "/" + chartId + "/" + startOfPreviousWeek.getMillis() + "/" + endPreviousWeek.getMillis();
+		this.add(new ExternalLink("lastweek", lastWeekUrl));
+		
+		DateTime startOfNextWeek = startOfPreviousWeek.plusWeeks(2);
+		DateTime endOfNextWeek = endPreviousWeek.plusWeeks(2);
+		String nextWeekUrl = calculateCurrentHostUrl() + "/" + chartId + "/" + startOfNextWeek.getMillis() + "/" + endOfNextWeek.getMillis();
+		this.add(new ExternalLink("nextweek", nextWeekUrl));
+
+		
+	}
 
 	private void buildChartSelection(final String chartIdSelected) {
 		Connection conn = null;
@@ -254,8 +282,9 @@ public class Analytics extends WebPage {
 		try {
 			conn = datasource.getConnection();
 			stmt = conn.createStatement();
-			executeQuery = stmt.executeQuery("SELECT DISTINCT `chart_id`, `chart_name` from charts;");
-			while(executeQuery.next()){
+			executeQuery = stmt
+					.executeQuery("SELECT DISTINCT `chart_id`, `chart_name` from charts;");
+			while (executeQuery.next()) {
 				String chartId = executeQuery.getString("chart_id");
 				String descrption = executeQuery.getString("chart_name");
 				map.put(chartId, descrption);
@@ -267,29 +296,40 @@ public class Analytics extends WebPage {
 			DbUtils.closeQuietly(stmt);
 			DbUtils.closeQuietly(conn);
 		}
-		
-		this.add(new ListView<String>("chartselector",new ArrayList(map.keySet())) {
+
+		this.add(new ListView<String>("chartselector", new ArrayList(map
+				.keySet())) {
 
 			@Override
 			protected void populateItem(ListItem<String> item) {
 				String id = item.getDefaultModelObjectAsString();
-				
-				if(chartIdSelected.equals(id)){
+
+				if (chartIdSelected.equals(id)) {
 					item.add(new AttributeAppender("class", new Model("active")));
 				}
-				
-				String renderFullUrl = RequestCycle.get().getUrlRenderer().renderFullUrl(
-						   Url.parse(urlFor(Analytics.class,null).toString()));
-				
+
+				String renderFullUrl = calculateCurrentHostUrl();
+
 				String chartName = map.get(id);
 				Label label = new Label("chartname", chartName);
-				ExternalLink bookmarkablePageLink = new ExternalLink("link", renderFullUrl + "/" + id);
+				ExternalLink bookmarkablePageLink = new ExternalLink("link",
+						renderFullUrl + "/" + id);
 				bookmarkablePageLink.add(label);
 				item.add(bookmarkablePageLink);
 			}
+
 		});
-		
+
 		SITEMAP = new HashMap(map);
+	}
+
+	public String calculateCurrentHostUrl() {
+		String urlHost = RequestCycle
+				.get()
+				.getUrlRenderer()
+				.renderFullUrl(
+						Url.parse(urlFor(Analytics.class, null).toString()));
+		return urlHost;
 	}
 
 }
