@@ -270,7 +270,8 @@ public class Analytics extends WebPage {
 		DateTime endOfNextWeek = endPreviousWeek.plusWeeks(2);
 		String nextWeekUrl = calculateCurrentHostUrl() + "/" + chartId + "/" + startOfNextWeek.getMillis() + "/" + endOfNextWeek.getMillis();
 		this.add(new ExternalLink("nextweek", nextWeekUrl));
-
+		String lastDays = calculateCurrentHostUrl() + "/" + chartId ;
+		this.add(new ExternalLink("lastdays", lastDays));
 		
 	}
 

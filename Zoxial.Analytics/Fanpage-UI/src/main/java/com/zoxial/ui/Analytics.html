@@ -1,239 +1,295 @@
 <html lang="en">
 <wicket:head>
-    <meta charset="utf-8">
-    <title wicket:id= "title">Bootstrap, from Twitter</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="">
-    <meta name="author" content="">
+	<meta charset="utf-8">
+	<title wicket:id="title">Bootstrap, from Twitter</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta name="description" content="">
+	<meta name="author" content="">
 
-    <!-- Le styles -->
-    <link href="http://twitter.github.com/bootstrap/assets/css/bootstrap.css" rel="stylesheet">
-    <style type="text/css">
-      body {
-        padding-top: 60px;
-        padding-bottom: 40px;
-      }
-      .sidebar-nav {
-        padding: 9px 0;
-      }
-    </style>
-    <link href="http://twitter.github.com/bootstrap/assets/css/bootstrap-responsive.css" rel="stylesheet">
+	<!-- Le styles -->
+	<link
+		href="http://twitter.github.com/bootstrap/assets/css/bootstrap.css"
+		rel="stylesheet">
+	<style type="text/css">
+body {
+	padding-top: 60px;
+	padding-bottom: 40px;
+}
 
-    <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
-    <!--[if lt IE 9]>
+.sidebar-nav {
+	padding: 9px 0;
+}
+</style>
+	<link
+		href="http://twitter.github.com/bootstrap/assets/css/bootstrap-responsive.css"
+		rel="stylesheet">
+
+	<!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
+	<!--[if lt IE 9]>
       <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
 
-    <!-- Le fav and touch icons -->
-    <link rel="shortcut icon" href="http://twitter.github.com/bootstrap/assets/ico/favicon.ico">
-    <link rel="apple-touch-icon-precomposed" sizes="144x144" href="http://twitter.github.com/bootstrap/assets/ico/apple-touch-icon-144-precomposed.png">
-    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="http://twitter.github.com/bootstrap/assets/ico/apple-touch-icon-114-precomposed.png">
-    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="http://twitter.github.com/bootstrap/assets/ico/apple-touch-icon-72-precomposed.png">
-    <link rel="apple-touch-icon-precomposed" href="http://twitter.github.com/bootstrap/assets/ico/apple-touch-icon-57-precomposed.png">
- 
+	<!-- Le fav and touch icons -->
+	<link rel="shortcut icon"
+		href="http://twitter.github.com/bootstrap/assets/ico/favicon.ico">
+	<link rel="apple-touch-icon-precomposed" sizes="144x144"
+		href="http://twitter.github.com/bootstrap/assets/ico/apple-touch-icon-144-precomposed.png">
+	<link rel="apple-touch-icon-precomposed" sizes="114x114"
+		href="http://twitter.github.com/bootstrap/assets/ico/apple-touch-icon-114-precomposed.png">
+	<link rel="apple-touch-icon-precomposed" sizes="72x72"
+		href="http://twitter.github.com/bootstrap/assets/ico/apple-touch-icon-72-precomposed.png">
+	<link rel="apple-touch-icon-precomposed"
+		href="http://twitter.github.com/bootstrap/assets/ico/apple-touch-icon-57-precomposed.png">
 
-    <script type="text/javascript" src="http://www.google.com/jsapi"></script>
-    <script type="text/javascript">
-      google.load('visualization', '1');
-    </script>
- 	<script wicket:id="za" type="text/javascript">
- 	</script>
-    <script type="text/javascript">
- 
-      function drawVisualization() {
-        var wrapper = new google.visualization.ChartWrapper({
-          chartType: 'ColumnChart',
-          dataTable: arr,
-          options: {'title': chartName},
-          containerId: 'visualization'
-        });
-        wrapper.draw();
-      }
-      google.setOnLoadCallback(drawVisualization);
-    </script>
-    
-    <script type="text/javascript">
 
-  var _gaq = _gaq || [];
-  _gaq.push(['_setAccount', 'UA-16195516-3']);
-  _gaq.push(['_trackPageview']);
+	<script type="text/javascript" src="http://www.google.com/jsapi"></script>
+	<script type="text/javascript">
+		google.load('visualization', '1');
+	</script>
+	<script wicket:id="za" type="text/javascript">
+		
+	</script>
+	<script type="text/javascript">
+		function drawVisualization() {
+			var wrapper = new google.visualization.ChartWrapper({
+				chartType : 'ColumnChart',
+				dataTable : arr,
+				options : {
+					'title' : chartName
+				},
+				containerId : 'visualization'
+			});
+			wrapper.draw();
+		}
+		google.setOnLoadCallback(drawVisualization);
+	</script>
 
-  (function() {
-    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-  })();
+	<script type="text/javascript">
+		var _gaq = _gaq || [];
+		_gaq.push([ '_setAccount', 'UA-16195516-3' ]);
+		_gaq.push([ '_trackPageview' ]);
 
-</script>
+		(function() {
+			var ga = document.createElement('script');
+			ga.type = 'text/javascript';
+			ga.async = true;
+			ga.src = ('https:' == document.location.protocol ? 'https://ssl'
+					: 'http://www')
+					+ '.google-analytics.com/ga.js';
+			var s = document.getElementsByTagName('script')[0];
+			s.parentNode.insertBefore(ga, s);
+		})();
+	</script>
 </wicket:head>
-  <body>
+<body>
 
-    <div class="navbar navbar-fixed-top">
-      <div class="navbar-inner">
-        <div class="container-fluid">
-          <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-          </a>
-          <a class="brand" href="#">Zoxial.Analytics</a>
-          <a onclick="$('#myModal').modal()" class="btn btn-success pull-right">Crear vos mismo tu propio gr&aacute;fico <b>gratis!</b>
-<!--             <a class="btn dropdown-toggle" data-toggle="dropdown" href="#"> -->
-<!--               <i class="icon-user"></i> Username -->
-<!--               <span class="caret"></span> -->
-<!--             </a> -->
-<!--             <ul class="dropdown-menu"> -->
-<!--               <li><a href="#">Profile</a></li> -->
-<!--               <li class="divider"></li> -->
-<!--               <li><a href="#">Sign Out</a></li> -->
-<!--             </ul> -->
-          </a>
-          <div class="nav-collapse">
-            <ul class="nav">
-              <li class="active"><a href="#">Home</a></li>
-              <li><a  href="http://blog.zoxial.com">Blog</a></li>
-              <li><a href="http://www.zoxial.com">Zoxial - Desarrollo de Aplicaciones para Facebook.</a></li>
-              <li><a href="#">Contact Me: <b>info@zoxial.com</b></a></li>
-            </ul>
-          </div><!--/.nav-collapse -->
-        </div>
-      </div>
-    </div>
+	<div class="navbar navbar-fixed-top">
+		<div class="navbar-inner">
+			<div class="container-fluid">
+				<a class="btn btn-navbar" data-toggle="collapse"
+					data-target=".nav-collapse"> <span class="icon-bar"></span> <span
+					class="icon-bar"></span> <span class="icon-bar"></span>
+				</a> <a class="brand" href="#">Zoxial.Analytics</a> <a
+					onclick="$('#myModal').modal()" class="btn btn-success pull-right">Crear
+					vos mismo tu propio gr&aacute;fico <b>gratis!</b> <!--             <a class="btn dropdown-toggle" data-toggle="dropdown" href="#"> -->
+					<!--               <i class="icon-user"></i> Username --> <!--               <span class="caret"></span> -->
+					<!--             </a> --> <!--             <ul class="dropdown-menu"> -->
+					<!--               <li><a href="#">Profile</a></li> --> <!--               <li class="divider"></li> -->
+					<!--               <li><a href="#">Sign Out</a></li> --> <!--             </ul> -->
+				</a>
+				<div class="nav-collapse">
+					<ul class="nav">
+						<li class="active"><a href="#">Home</a></li>
+						<li><a href="http://blog.zoxial.com">Blog</a></li>
+						<li><a href="http://www.zoxial.com">Zoxial - Desarrollo
+								de Aplicaciones para Facebook.</a></li>
+						<li><a href="#">Contact Me: <b>info@zoxial.com</b></a></li>
+					</ul>
+				</div>
+				<!--/.nav-collapse -->
+			</div>
+		</div>
+	</div>
 
 
-<div class="modal hide" id="myModal">
-  <div class="modal-header">
-    <button type="button" class="close" data-dismiss="modal">×</button>
-    <h3>Agrega tu Gr&aacute;fico</h3>
-  </div>
-  <div class="modal-body">
-    <p class="lead">Envianos un listado de las paginas de facebook que quer&eacute;s trackear a <a href="mailto:info@zoxial.com">info@zoxial.com</a> y nosotros armamos el chart inmediatamente! Es <b>Gr&aacute;tis!</b><br> Gracias - Zoxial.com</p>
-  </div>
-  <div class="modal-footer">
-    <a href="#" class="btn" data-dismiss="modal">Close</a>
-  </div>
-</div>
-<a wicket:id="lastweek">Last week</a><span wicket:id="currentdate">[23/06/2012 - 30/06/2012]</span><a wicket:id="nextweek">Next Week</a>
-    <div class="container-fluid">
-      <div class="row-fluid">
-        <div class="span3">
-          <div class="well sidebar-nav">
-            <ul class="nav nav-list">
-              <li class="nav-header">Argentina Charts</li>
-              <li wicket:id="chartselector" ><a wicket:id="link" href="#"><wicket:container wicket:id="chartname"/></a></li>
-              <li><a href="#" style="visibility: hidden;"></a></li>
-              <li><a href="#" style="visibility: hidden;">Link</a></li>
-              <li><a href="#" style="visibility: hidden;">Link</a></li>
-              <li class="nav-header"  style="visibility: hidden;">Sidebar</li>
-              <li><a href="#" style="visibility: hidden;">Link</a></li>
-              <li><a href="#" style="visibility: hidden;">Link</a></li>
-              <li><a href="#" style="visibility: hidden;">Link</a></li>
-           
-            </ul>
-          </div><!--/.well -->
-        </div><!--/span-->
-        <div class="span9">
-        
-        <div class="page-header">
-        <h1 ><wicket:container wicket:id="description"/><br>
-        <small>
-		Muestra qu&eacute; empresa tuvo mejor performance en su pagina de facebook en los &uacute;ltimos 7 d&iacute;as.
-        </small></h1>
-        </div>
-        <div class="row">
-              <div class="span8">
-                  <div id="visualization" style="width: 500px; height: 400px;"></div>
-                  </div>
-        <div class="span4">
-    <table class="table table-bordered table-striped">
-        <colgroup>
-          <col class="span1"/>
-          <col class="span7"/>
-        </colgroup>
-        <thead>
-          <tr>
-            <th>Page Name</th>
-            <th>Engagement <span class="icon-arrow-up"></span></th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr wicket:id="viewer">
-            <td wicket:id="pagename">
-            </td>
-            <td wicket:id="engagement">
-            </td>
-          </tr>
-          
-        </tbody>
-      </table>
-      </div>
+	<div class="modal hide" id="myModal">
+		<div class="modal-header">
+			<button type="button" class="close" data-dismiss="modal">×</button>
+			<h3>Agrega tu Gr&aacute;fico</h3>
+		</div>
+		<div class="modal-body">
+			<p class="lead">
+				Envianos un listado de las paginas de facebook que quer&eacute;s
+				trackear a <a href="mailto:info@zoxial.com">info@zoxial.com</a> y
+				nosotros armamos el chart inmediatamente! Es <b>Gr&aacute;tis!</b><br>
+				Gracias - Zoxial.com
+			</p>
+		</div>
+		<div class="modal-footer">
+			<a href="#" class="btn" data-dismiss="modal">Close</a>
+		</div>
+	</div>
+	<div class="container-fluid">
+		<div class="row-fluid">
+			<div class="span3">
+				<div class="well sidebar-nav">
+					<ul class="nav nav-list">
+						<li class="nav-header">Argentina Charts</li>
+						<li wicket:id="chartselector"><a wicket:id="link" href="#"><wicket:container
+									wicket:id="chartname" /></a></li>
+						<li><a href="#" style="visibility: hidden;"></a></li>
+						<li><a href="#" style="visibility: hidden;">Link</a></li>
+						<li><a href="#" style="visibility: hidden;">Link</a></li>
+						<li class="nav-header" style="visibility: hidden;">Sidebar</li>
+						<li><a href="#" style="visibility: hidden;">Link</a></li>
+						<li><a href="#" style="visibility: hidden;">Link</a></li>
+						<li><a href="#" style="visibility: hidden;">Link</a></li>
 
-      </div>
-    <h1>Los 5 Comentarios m&aacute;s influyentes de cada empresa<br>
-        <small>
-        Muestra los 5 comentarios que m&aacute;s engagement tuvieron en los &uacute;ltimos 7 d&iacute;as
-        </small></h1>  
-      <div wicket:id="chartitems">
-      <h2 wicket:id="itemName"></h2>
-      
-      
-      	<table class="table table-bordered table-striped">
-        <colgroup>
-          <col class="span1"/>
-          <col class="span7"/>
-        </colgroup>
-        <thead>
-          <tr>
-            <th>Position</th>
-            <th>Engagement <span class="icon-arrow-up"></span></th>
-            <th>Date</th>
-            <th>Message</th>
-            <th>Facebook Link</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr wicket:id="items">
-                      <td wicket:id="index"/>
-          
-            <td wicket:id="engagement"/>
-            <td wicket:id="date"/>
-            <td wicket:id="message"/>
-            <td wicket:id="link"/>
-          </tr>
-        </tbody>
-      </table>
-      </div>
-	      <div class="wall">
-	      <b>Share this chart: </b><a wicket:id="sharelink"> <wicket:container wicket:id="text"></wicket:container></a>
-	      </div>
-        </div><!--/span-->
-      </div><!--/row-->
+					</ul>
+				</div>
+				<!--/.well -->
+			</div>
+			<!--/span-->
+			<div class="span9">
 
-      <hr>
+				<div class="page-header">
+					<h1>
+						<wicket:container wicket:id="description" />
+						<br> <small> Muestra qu&eacute; empresa tuvo mejor
+							performance en su pagina de facebook. </small>
+					</h1>
+				</div>
+				<div class="row">
+					<div class="span8">
+						<div id="visualization" style="width: 500px; height: 400px;"></div>
+					</div>
+					<div class="span4">
+						<table class="table table-bordered table-striped">
 
-      <footer>
-        <p>Zoxial.com Company 2012</p>
-      </footer>
+							<thead>
+								<tr>
+									<th>Current date range</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr>
+									<td wicket:id="currentdate">[23/06/2012 - 30/06/2012]</td>
+								</tr>
+								<tr>
+									<td>
+										<div class="btn-group">
+											<a wicket:id="lastweek" class="btn">Last Week</a>
+											<a wicket:id="lastdays" class="btn">Last 7 Days</a>
+											<a wicket:id="nextweek" class="btn">Next Week</a>
+										</div>
+									</td>
+								</tr>
+							</tbody>
+						</table>
+						<table class="table table-bordered table-striped">
+							<colgroup>
+								<col class="span1" />
+								<col class="span7" />
+							</colgroup>
+							<thead>
+								<tr>
+									<th>Page Name</th>
+									<th>Engagement <span class="icon-arrow-up"></span></th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr wicket:id="viewer">
+									<td wicket:id="pagename"></td>
+									<td wicket:id="engagement"></td>
+								</tr>
 
-    </div><!--/.fluid-container-->
+							</tbody>
+						</table>
+					</div>
 
-    <!-- Le javascript
+				</div>
+				<h1>
+					Los 5 Comentarios m&aacute;s influyentes de cada empresa<br> <small>
+						Muestra los 5 comentarios que m&aacute;s engagement.</small>
+				</h1>
+				<div wicket:id="chartitems">
+					<h2 wicket:id="itemName"></h2>
+
+
+					<table class="table table-bordered table-striped">
+						<colgroup>
+							<col class="span1" />
+							<col class="span7" />
+						</colgroup>
+						<thead>
+							<tr>
+								<th>Position</th>
+								<th>Engagement <span class="icon-arrow-up"></span></th>
+								<th>Date</th>
+								<th>Message</th>
+								<th>Facebook Link</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr wicket:id="items">
+								<td wicket:id="index" />
+
+								<td wicket:id="engagement" />
+								<td wicket:id="date" />
+								<td wicket:id="message" />
+								<td wicket:id="link" />
+							</tr>
+						</tbody>
+					</table>
+				</div>
+				<div class="wall">
+					<b>Share this chart: </b><a wicket:id="sharelink"> <wicket:container
+							wicket:id="text"></wicket:container></a>
+				</div>
+			</div>
+			<!--/span-->
+		</div>
+		<!--/row-->
+
+		<hr>
+
+		<footer>
+			<p>Zoxial.com Company 2012</p>
+		</footer>
+
+	</div>
+	<!--/.fluid-container-->
+
+	<!-- Le javascript
     ================================================== -->
-    <!-- Placed at the end of the document so the pages load faster -->
-    <script src="http://twitter.github.com/bootstrap/assets/js/jquery.js"></script>
-    <script src="http://twitter.github.com/bootstrap/assets/js/bootstrap-transition.js"></script>
-    <script src="http://twitter.github.com/bootstrap/assets/js/bootstrap-alert.js"></script>
-    <script src="http://twitter.github.com/bootstrap/assets/js/bootstrap-modal.js"></script>
-    <script src="http://twitter.github.com/bootstrap/assets/js/bootstrap-dropdown.js"></script>
-    <script src="http://twitter.github.com/bootstrap/assets/js/bootstrap-scrollspy.js"></script>
-    <script src="http://twitter.github.com/bootstrap/assets/js/bootstrap-tab.js"></script>
-    <script src="http://twitter.github.com/bootstrap/assets/js/bootstrap-tooltip.js"></script>
-    <script src="http://twitter.github.com/bootstrap/assets/js/bootstrap-popover.js"></script>
-    <script src="http://twitter.github.com/bootstrap/assets/js/bootstrap-button.js"></script>
-    <script src="http://twitter.github.com/bootstrap/assets/js/bootstrap-collapse.js"></script>
-    <script src="http://twitter.github.com/bootstrap/assets/js/bootstrap-carousel.js"></script>
-    <script src="http://twitter.github.com/bootstrap/assets/js/bootstrap-typeahead.js"></script>
+	<!-- Placed at the end of the document so the pages load faster -->
+	<script src="http://twitter.github.com/bootstrap/assets/js/jquery.js"></script>
+	<script
+		src="http://twitter.github.com/bootstrap/assets/js/bootstrap-transition.js"></script>
+	<script
+		src="http://twitter.github.com/bootstrap/assets/js/bootstrap-alert.js"></script>
+	<script
+		src="http://twitter.github.com/bootstrap/assets/js/bootstrap-modal.js"></script>
+	<script
+		src="http://twitter.github.com/bootstrap/assets/js/bootstrap-dropdown.js"></script>
+	<script
+		src="http://twitter.github.com/bootstrap/assets/js/bootstrap-scrollspy.js"></script>
+	<script
+		src="http://twitter.github.com/bootstrap/assets/js/bootstrap-tab.js"></script>
+	<script
+		src="http://twitter.github.com/bootstrap/assets/js/bootstrap-tooltip.js"></script>
+	<script
+		src="http://twitter.github.com/bootstrap/assets/js/bootstrap-popover.js"></script>
+	<script
+		src="http://twitter.github.com/bootstrap/assets/js/bootstrap-button.js"></script>
+	<script
+		src="http://twitter.github.com/bootstrap/assets/js/bootstrap-collapse.js"></script>
+	<script
+		src="http://twitter.github.com/bootstrap/assets/js/bootstrap-carousel.js"></script>
+	<script
+		src="http://twitter.github.com/bootstrap/assets/js/bootstrap-typeahead.js"></script>
 
-  
 
-</body></html>
+
+</body>
+</html>
