@@ -8,6 +8,8 @@ import java.sql.Statement;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -33,6 +35,7 @@ import org.joda.time.LocalDate;
 import org.json.JSONArray;
 
 import com.restfb.util.DateUtils;
+import com.zoxial.domain.Engagement;
 
 public class Analytics extends WebPage {
 	private static final long serialVersionUID = 1L;
@@ -108,43 +111,26 @@ public class Analytics extends WebPage {
 					.getTime()));
 			executeQueryForWinner = engagementWinnerQuery.executeQuery();
 
-			ArrayList<Properties> arrayList = new ArrayList<Properties>();
+			ArrayList<Engagement> engagements = new ArrayList<Engagement>();
 
-			JSONArray namesChartJS = new JSONArray();
-			namesChartJS.put("");
-			JSONArray valuesChartJS = new JSONArray();
-			valuesChartJS.put("");
 			while (executeQueryForWinner.next()) {
-				Properties jsonObject = new Properties();
 				String pageName = executeQueryForWinner.getString("fbname");
 				long engagement = executeQueryForWinner
 						.getLong("sumEngagement");
-				jsonObject.put("page_name", pageName);
-				namesChartJS.put(pageName);
-				jsonObject.put("engagement", "" + engagement);
-				valuesChartJS.put(engagement);
-				arrayList.add(jsonObject);
+				Engagement theEngagement = new Engagement(pageName, engagement);
+				engagements.add(theEngagement);
 			}
-			JSONArray compose = new JSONArray();
-			compose.put(namesChartJS);
-			compose.put(valuesChartJS);
-			Label label = new Label(
-					"za",
-					"var arr = "
-							+ compose.toString()
-							+ "; var chartName = 'La barra mas alta muestra que pagina tuvo mejor performance los ultimos 7 dias';");
-			label.setEscapeModelStrings(false);
-			this.add(label);
 
-			this.add(new ListView<Properties>("viewer", arrayList) {
+			builBarChart(engagements);
+
+			this.add(new ListView<Engagement>("viewer", engagements) {
 
 				@Override
-				protected void populateItem(ListItem<Properties> item) {
-					Properties model = item.getModelObject();
-					item.add(new Label("pagename", model
-							.getProperty("page_name")));
-					item.add(new Label("engagement", model
-							.getProperty("engagement")));
+				protected void populateItem(ListItem<Engagement> item) {
+					Engagement model = item.getModelObject();
+					item.add(new Label("pagename", model.getPageName()));
+					item.add(new Label("engagement", String.valueOf(model
+							.getEngagement())));
 
 				}
 			});
@@ -258,21 +244,63 @@ public class Analytics extends WebPage {
 		this.add(shareLink);
 	}
 
-	private void createNavigatorLink(String chartId, DateTime toDate, DateTime fromDate) {
+	/**
+	 * Builds the bar chart using the engagements retrived from the repository.
+	 * It sort the list by name, to have always the chart in the same position 
+	 * with the same color.
+	 * @param engagements The engagement retrived from repository, cannot be null.
+	 */
+	public void builBarChart(ArrayList<Engagement> engagements) {
+		List<Engagement> engagemntsForChart = new ArrayList<Engagement>(
+				engagements);
+
+		JSONArray namesChartJS = new JSONArray();
+		namesChartJS.put("");
+		JSONArray valuesChartJS = new JSONArray();
+		valuesChartJS.put("");
+		Collections.sort(engagemntsForChart, new Comparator<Engagement>() {
+
+			public int compare(Engagement o1, Engagement o2) {
+				return o1.getPageName().compareTo(o2.getPageName());
+			}
+		});
+
+		for (Engagement e : engagemntsForChart) {
+			namesChartJS.put(e.getPageName());
+			valuesChartJS.put(e.getEngagement());
+		}
+
+		JSONArray compose = new JSONArray();
+		compose.put(namesChartJS);
+		compose.put(valuesChartJS);
+		Label label = new Label(
+				"za",
+				"var arr = "
+						+ compose.toString()
+						+ "; var chartName = 'The highest bar shows the facebook page that is having the best performance.';");
+		label.setEscapeModelStrings(false);
+		this.add(label);
+	}
+
+	private void createNavigatorLink(String chartId, DateTime toDate,
+			DateTime fromDate) {
 		DateTime date = toDate;
 		DateTime endPreviousWeek = date.minusDays(date.getDayOfWeek());
-		DateTime startOfPreviousWeek = endPreviousWeek.minusDays(6);		
-		
-		String lastWeekUrl = calculateCurrentHostUrl() + "/" + chartId + "/" + startOfPreviousWeek.getMillis() + "/" + endPreviousWeek.getMillis();
+		DateTime startOfPreviousWeek = endPreviousWeek.minusDays(6);
+
+		String lastWeekUrl = calculateCurrentHostUrl() + "/" + chartId + "/"
+				+ startOfPreviousWeek.getMillis() + "/"
+				+ endPreviousWeek.getMillis();
 		this.add(new ExternalLink("lastweek", lastWeekUrl));
-		
+
 		DateTime startOfNextWeek = startOfPreviousWeek.plusWeeks(2);
 		DateTime endOfNextWeek = endPreviousWeek.plusWeeks(2);
-		String nextWeekUrl = calculateCurrentHostUrl() + "/" + chartId + "/" + startOfNextWeek.getMillis() + "/" + endOfNextWeek.getMillis();
+		String nextWeekUrl = calculateCurrentHostUrl() + "/" + chartId + "/"
+				+ startOfNextWeek.getMillis() + "/" + endOfNextWeek.getMillis();
 		this.add(new ExternalLink("nextweek", nextWeekUrl));
-		String lastDays = calculateCurrentHostUrl() + "/" + chartId ;
+		String lastDays = calculateCurrentHostUrl() + "/" + chartId;
 		this.add(new ExternalLink("lastdays", lastDays));
-		
+
 	}
 
 	private void buildChartSelection(final String chartIdSelected) {
