@@ -6,8 +6,8 @@
 	<packaging>war</packaging>
 	<version>1.0-SNAPSHOT</version>
 	<!-- TODO project name  -->
-	<name>quickstart</name>
-	<description></description>
+	<name>Fanpage-UI</name>
+	<description>The user intereface that shows all the analytics.</description>
 	<!--
 		TODO <organization> <name>company name</name> <url>company url</url>
 		</organization>
@@ -24,6 +24,12 @@
 		<jetty.version>7.5.0.v20110901</jetty.version>
 	</properties>
 	<dependencies>
+		<dependency>
+			<groupId>commons-configuration</groupId>
+			<artifactId>commons-configuration</artifactId>
+			<version>1.8</version>
+		</dependency>
+
 		<dependency>
 			<groupId>joda-time</groupId>
 			<artifactId>joda-time</artifactId>

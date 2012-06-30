@@ -16,12 +16,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 
+import org.apache.commons.configuration.Configuration;
 import org.apache.commons.dbcp.BasicDataSource;
 import org.apache.commons.dbutils.DbUtils;
 import org.apache.wicket.behavior.AttributeAppender;
 import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.markup.html.basic.Label;
-import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.markup.html.link.ExternalLink;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
@@ -29,12 +29,10 @@ import org.apache.wicket.model.Model;
 import org.apache.wicket.request.Url;
 import org.apache.wicket.request.cycle.RequestCycle;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
-import org.apache.wicket.util.string.StringValue;
 import org.joda.time.DateTime;
-import org.joda.time.LocalDate;
 import org.json.JSONArray;
 
-import com.restfb.util.DateUtils;
+import com.zoxial.application.ConfigResource;
 import com.zoxial.domain.Engagement;
 
 public class Analytics extends WebPage {
@@ -43,7 +41,8 @@ public class Analytics extends WebPage {
 	private static BasicDataSource datasource;
 
 	public static Map SITEMAP = new HashMap();
-
+	
+	/** The default date pattern that must be used when we show dates. */
 	private static String DATE_PATTERN = "dd/MM/yyyy";
 
 	static {
@@ -51,13 +50,15 @@ public class Analytics extends WebPage {
 
 		ds.setDriverClassName("com.mysql.jdbc.Driver");
 
-		String host = "127.0.0.1";
+		Configuration configResource = ConfigResource.INSTANCE;
+		String host = configResource.getString("mysql.host");
+		String user = configResource.getString("mysql.user");
+		String pass = configResource.getString("mysql.pass");
 
 		String url = "jdbc:mysql://" + host + "/fanpagespider";
 		ds.setUrl(url);
-		String user = "root";
 		ds.setUsername(user);
-		ds.setPassword("280884");
+		ds.setPassword(pass);
 		datasource = (BasicDataSource) ds;
 	}
 
