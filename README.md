@@ -1,4 +1,4 @@
 zoxial
 ======
 
-Open Source Analytics for socialmedia
+Open Source for Socialmedia
