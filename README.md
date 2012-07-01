@@ -6,7 +6,7 @@ Open Source for Socialmedia
 Quick Start
 ===================
 1.- Clone this project <br>
-2.- Create your mysql schema importing this file: https://github.com/melendeznicolas/zoxial/blob/master/Zoxial.Analytics/SqlSchema/schema.sql
+2.- Create your mysql schema by importing this file: https://github.com/melendeznicolas/zoxial/blob/master/Zoxial.Analytics/SqlSchema/schema.sql
 
 Then there are 2 projects:
  * The Crawler that retrives information from facebook.
