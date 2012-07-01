@@ -9,9 +9,9 @@ Quick Start
 2.- Create your mysql schema by importing this file: https://github.com/melendeznicolas/zoxial/blob/master/Zoxial.Analytics/SqlSchema/schema.sql
 
 Then there are 2 projects:
- * The Crawler that retrives information from facebook.
+ * <b>The Crawler: </b> Retrives information from facebook.
 https://github.com/melendeznicolas/zoxial/tree/master/Zoxial.Analytics/Crawler
- * The User Interface to show the charts.
+ * <b>Fanpage-UI: </b>The User Interface to show the charts.
 https://github.com/melendeznicolas/zoxial/tree/master/Zoxial.Analytics/Fanpage-UI
 
 First set up the crawler
