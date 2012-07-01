@@ -16,6 +16,14 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
+-- Creates database
+--
+
+DROP DATABASE IF EXISTS `fanpagespider`;
+CREATE DATABASE `fanpagespider`;
+USE DATABASE `fanpagespider`;
+
+--
 -- Table structure for table `charts`
 --
 
