@@ -41,7 +41,7 @@ public class Analytics extends WebPage {
 	private static BasicDataSource datasource;
 
 	public static Map SITEMAP = new HashMap();
-	
+
 	/** The default date pattern that must be used when we show dates. */
 	private static String DATE_PATTERN = "dd/MM/yyyy";
 
@@ -54,8 +54,9 @@ public class Analytics extends WebPage {
 		String host = configResource.getString("mysql.host");
 		String user = configResource.getString("mysql.user");
 		String pass = configResource.getString("mysql.pass");
+		String database = configResource.getString("mysql.database");
 
-		String url = "jdbc:mysql://" + host + "/fanpagespider";
+		String url = "jdbc:mysql://" + host + "/" + database;
 		ds.setUrl(url);
 		ds.setUsername(user);
 		ds.setPassword(pass);
@@ -247,9 +248,11 @@ public class Analytics extends WebPage {
 
 	/**
 	 * Builds the bar chart using the engagements retrived from the repository.
-	 * It sort the list by name, to have always the chart in the same position 
+	 * It sort the list by name, to have always the chart in the same position
 	 * with the same color.
-	 * @param engagements The engagement retrived from repository, cannot be null.
+	 * 
+	 * @param engagements
+	 *            The engagement retrived from repository, cannot be null.
 	 */
 	public void builBarChart(ArrayList<Engagement> engagements) {
 		List<Engagement> engagemntsForChart = new ArrayList<Engagement>(

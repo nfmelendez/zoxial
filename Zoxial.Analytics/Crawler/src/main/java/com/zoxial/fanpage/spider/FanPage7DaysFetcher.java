@@ -19,16 +19,6 @@ import com.restfb.FacebookClient;
 import com.restfb.json.JsonObject;
 import com.restfb.util.DateUtils;
 
-/**
- * CREATE TABLE `posts` ( `id` varchar(255) NOT NULL, `comments` bigint(20)
- * DEFAULT NULL, `likes` bigint(20) DEFAULT NULL, `shares` bigint(20) DEFAULT
- * NULL, `from_id` varchar(255) DEFAULT NULL, `from_name` varchar(255) DEFAULT
- * NULL, `page_name` varchar(255) DEFAULT NULL, `created_time` datetime DEFAULT
- * NULL, `message` TEXT DEFAULT NULL, PRIMARY KEY (`id`) ) ENGINE=InnoDB DEFAULT
- * CHARSET=UTF-8;
- * 
- */
-
 public class FanPage7DaysFetcher extends FacebookFetchActor {
 
 	private static Logger log = Logger.getLogger(FanPage7DaysFetcher.class);
@@ -41,12 +31,14 @@ public class FanPage7DaysFetcher extends FacebookFetchActor {
 		ds.setDriverClassName("com.mysql.jdbc.Driver");
 
 		String host = ConfigResource.INSTANCE.getString("mysql.host");
-
-		String url = "jdbc:mysql://" + host + "/fanpagespider";
-		ds.setUrl(url);
 		String user = ConfigResource.INSTANCE.getString("mysql.user");
+		String pass = ConfigResource.INSTANCE.getString("mysql.pass");
+		String database = ConfigResource.INSTANCE.getString("mysql.database");
+
+		String url = "jdbc:mysql://" + host + "/" + database;
+		ds.setUrl(url);
 		ds.setUsername(user);
-		ds.setPassword(ConfigResource.INSTANCE.getString("mysql.pass"));
+		ds.setPassword(pass);
 		datasource = (BasicDataSource) ds;
 	}
 

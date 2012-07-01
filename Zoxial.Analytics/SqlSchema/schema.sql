@@ -19,9 +19,9 @@
 -- Creates database
 --
 
-DROP DATABASE IF EXISTS `fanpagespider`;
-CREATE DATABASE `fanpagespider`;
-USE DATABASE `fanpagespider`;
+DROP DATABASE IF EXISTS `zoxialanalytics`;
+CREATE DATABASE `zoxialanalytics`;
+USE `zoxialanalytics`;
 
 --
 -- Table structure for table `charts`
