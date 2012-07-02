@@ -18,6 +18,7 @@ Tech we love
 * All code is java
 * Maven is or dependecy manager
 * Github
+* Jetty as out application server.
 
 Quick Start
 ===================
