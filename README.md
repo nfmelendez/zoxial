@@ -6,7 +6,7 @@ Open Source Analytics for Facebook.
 License
 ===============
 Under the Apache License, Version 2.0,  
-Can be used for commercial companies.
+Can be used by commercial companies.
 
 Tech we love
 ===================
