@@ -16,7 +16,7 @@ Tech we love
 * Mysql as database.
 * Twitter bootstrap for UI
 * All code is java
-* Maven is or dependecy manager
+* Maven is our dependecy manager
 * Github
 * Jetty as out application server.
 
