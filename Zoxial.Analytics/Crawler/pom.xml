@@ -15,7 +15,7 @@
 				<artifactId>exec-maven-plugin</artifactId>
 				<version>1.2.1</version>
 				<configuration>
-					<mainClass>com.zoxial.fanpage.spider.App</mainClass>
+					<mainClass>com.zoxial.fanpage.spider.CrawlerService</mainClass>
 				</configuration>
 			</plugin>
 			<plugin>

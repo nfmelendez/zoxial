@@ -18,8 +18,26 @@ import akka.util.Duration;
 import ar.com.blog.melendez.asyncrestfb.Main;
 import ar.com.blog.melendez.asyncrestfb.messages.Fetch;
 
-
-public class App {
+/** 
+ * Service for Crawling Facebook.
+ * It configs the akka Routers and Actors for fetching information.
+ * And also configures the period of time the data from facebook is retrived.
+ * Finally, this is the entry point of the crawler and this class is
+ * configured in the pom.xml for execution, so the mvn exec:java calls
+ * the main method of this class.
+ * 
+ * @author @nfmelendez - nfmelendez@gmail.com
+ *
+ */
+public class CrawlerService {
+	
+	/**
+	 * The method is called from the mvn exec:java and that is configured
+	 * is the pom.xml of this project.
+	 * This is the entry point of the application.
+	 * 
+	 * @param args - Currently it hasn't any argument.
+	 */
 	public static void main(String[] args) {
 		ActorSystem system = Main.init();
 
