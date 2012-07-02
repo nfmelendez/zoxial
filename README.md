@@ -1,7 +1,23 @@
-zoxial
-======
+Open.Zoxial.Analytics
+======================
 
-Open Source for Socialmedia
+Open Source Analytics for Facebook.
+
+License
+===============
+Under the Apache License, Version 2.0,  
+Can be used for commercial companies.
+
+Tech we love
+===================
+* Akka for thread safe, distributed crawling.
+* Wicket for User interfase.
+* Eclipse as default IDE
+* Mysql as database.
+* Twitter bootstrap for UI
+* All code is java
+* Maven is or dependecy manager
+* Github
 
 Quick Start
 ===================
