@@ -1,5 +1,5 @@
 mkdir -p log
 mvn clean install
-nohup mvn exec:java > /dev/null &
+nohup mvn $1 exec:java > /dev/null  2>&1 &
 echo $! > app.pid
 
