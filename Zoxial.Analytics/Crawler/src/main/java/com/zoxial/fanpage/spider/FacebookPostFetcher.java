@@ -19,9 +19,9 @@ import com.restfb.FacebookClient;
 import com.restfb.json.JsonObject;
 import com.restfb.util.DateUtils;
 
-public class FanPage7DaysFetcher extends FacebookFetchActor {
+public class FacebookPostFetcher extends FacebookFetchActor {
 
-	private static Logger log = Logger.getLogger(FanPage7DaysFetcher.class);
+	private static Logger log = Logger.getLogger(FacebookPostFetcher.class);
 
 	public static BasicDataSource datasource;
 
@@ -42,7 +42,7 @@ public class FanPage7DaysFetcher extends FacebookFetchActor {
 		datasource = (BasicDataSource) ds;
 	}
 
-	public FanPage7DaysFetcher() {
+	public FacebookPostFetcher() {
 	}
 
 	@Override
