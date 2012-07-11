@@ -19,13 +19,21 @@ import java.util.Properties;
 import org.apache.commons.configuration.Configuration;
 import org.apache.commons.dbcp.BasicDataSource;
 import org.apache.commons.dbutils.DbUtils;
+import org.apache.wicket.MarkupContainer;
+import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.apache.wicket.ajax.markup.html.form.AjaxSubmitLink;
 import org.apache.wicket.behavior.AttributeAppender;
+import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.markup.html.basic.Label;
+import org.apache.wicket.markup.html.form.Form;
+import org.apache.wicket.markup.html.form.TextArea;
+import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.link.ExternalLink;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.model.Model;
+import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.request.Url;
 import org.apache.wicket.request.cycle.RequestCycle;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
@@ -95,6 +103,7 @@ public class Analytics extends WebPage {
 		ResultSet postsIterator = null;
 		this.buildChartSelection(chartId);
 		this.createNavigatorLink(chartId, toDate, fromDate);
+		this.buildCreateChartForm();
 
 		String currentDate = fromDate.toString(DATE_PATTERN) + " - "
 				+ toDate.toString(DATE_PATTERN);
@@ -244,6 +253,73 @@ public class Analytics extends WebPage {
 		ExternalLink shareLink = new ExternalLink("sharelink", fullUrl);
 		shareLink.add(label);
 		this.add(shareLink);
+	}
+
+	private String fanpages = "https://www.facebook.com/cocacola\nhttps://www.facebook.com/McDonalds\nhttps://www.facebook.com/verizon";
+	private String description;
+	private String mail;
+	private String name;
+
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	private void buildCreateChartForm() {
+
+		final WebMarkupContainer success = new WebMarkupContainer("success");
+		success.setVisible(false);
+		success.setOutputMarkupPlaceholderTag(true);
+		this.add(success);
+
+		Form f = new Form("createchartform");
+		TextField name = new TextField("name", new PropertyModel<String>(this,
+				"name"));
+		TextArea description = new TextArea("description",
+				new PropertyModel<String>(this, "description"));
+		TextField mail = new TextField("mail", new PropertyModel<String>(this,
+				"mail"));
+		TextArea fanpages = new TextArea("fanpages", new PropertyModel<String>(
+				this, "fanpages"));
+		f.add(name);
+		f.add(description);
+		f.add(mail);
+		f.add(fanpages);
+		AjaxSubmitLink createChart = new AjaxSubmitLink("createchart", f) {
+
+			@Override
+			protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
+
+				System.out.println(Analytics.this.name);
+				form.setVisible(false);
+				target.add(form);
+				success.setVisible(true);
+				target.add(success);
+				this.setVisible(false);
+				target.add(this);
+				Connection conn = null;
+				PreparedStatement insertNewChart = null;
+				try {
+					conn = datasource.getConnection();
+					String sqlInsertChart = "INSERT INTO new_chart_request (chart_name,author_mail,description,fanpages) VALUES (?,?,?,?);";
+					insertNewChart = conn.prepareStatement(sqlInsertChart);
+					insertNewChart.setString(1, Analytics.this.name);
+					insertNewChart.setString(2, Analytics.this.mail);
+					insertNewChart.setString(3, Analytics.this.description);
+					insertNewChart.setString(4, Analytics.this.fanpages);
+					insertNewChart.execute();
+				} catch (SQLException e) {
+					throw new RuntimeException(e);
+				} finally {
+					DbUtils.closeQuietly(insertNewChart);
+					DbUtils.closeQuietly(conn);
+				}
+			}
+
+			@Override
+			protected void onError(AjaxRequestTarget target, Form<?> form) {
+
+			}
+		};
+		this.add(f);
+		this.add(createChart);
+
 	}
 
 	/**

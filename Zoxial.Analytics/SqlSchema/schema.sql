@@ -77,4 +77,12 @@ CREATE TABLE `posts` (
 --
 -- Dumping data for table `posts`
 --
-
+DROP TABLE IF EXISTS `new_chart_request`;
+CREATE TABLE `new_chart_request` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `chart_name` varchar(100) DEFAULT NULL,
+  `author_mail` varchar(60) DEFAULT NULL,
+  `description` TEXT DEFAULT NULL,
+  `fanpages` TEXT DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8;

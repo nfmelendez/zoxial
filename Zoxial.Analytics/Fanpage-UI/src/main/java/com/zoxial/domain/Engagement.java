@@ -1,5 +1,7 @@
 package com.zoxial.domain;
 
+import java.io.Serializable;
+
 /**
  * Represents an engagement for a page. Now engagement is comments + likes +
  * shares.
@@ -7,7 +9,7 @@ package com.zoxial.domain;
  * @author @nfmelendez
  * 
  */
-public class Engagement {
+public class Engagement implements Serializable {
 
 	/** The pagename, cannot be null. */
 	private String pageName;
