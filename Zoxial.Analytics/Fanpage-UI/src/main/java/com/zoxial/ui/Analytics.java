@@ -110,9 +110,15 @@ public class Analytics extends WebPage {
 		this.add(new Label("currentdate", currentDate));
 		try {
 			conn = datasource.getConnection();
-			String sql = "select page_name, sum(engagement) AS sumEngagement, "
-					+ "(SELECT charts.page_name FROM charts where `facebook_page_id` = posts.page_name) AS fbname "
-					+ "from posts where from_id IN ( SELECT facebook_page_id from charts where chart_id = ? ) "
+			
+//            SELECT page_name, sum(engagement) AS sumEngagement,
+//			(SELECT name FROM facebook_pages WHERE facebook_pages.id = posts.page_name) AS fbname 
+//			from posts where from_id IN ( SELECT id from facebook_pages where facebook_pages.chart_id = 4 )
+//			group by page_name order by sumEngagement DESC;
+			
+			String sql = "SELECT page_name, sum(engagement) AS sumEngagement, "
+					+ "(SELECT name FROM facebook_pages WHERE facebook_pages.id = posts.page_name) AS fbname "
+					+ "from posts where from_id IN ( SELECT facebook_pages.id from facebook_pages,charts c where facebook_pages.chart_id = c.id AND c.chart_id = ? ) "
 					+ "AND created_time BETWEEN ? AND ? group by page_name order by sumEngagement DESC";
 			engagementWinnerQuery = conn.prepareStatement(sql);
 			engagementWinnerQuery.setString(1, chartId);
@@ -149,7 +155,7 @@ public class Analytics extends WebPage {
 			statementForQueryChart = conn.createStatement();
 
 			executeQueryForCharts = statementForQueryChart
-					.executeQuery("SELECT facebook_page_id,page_name, description FROM charts WHERE chart_id = '"
+					.executeQuery("SELECT f.id as facebook_page_id,f.name as page_name, c.description as description FROM charts c,facebook_pages f WHERE f.chart_id = c.id AND c.chart_id = '"
 							+ chartId + "'");
 			final HashMap chartItem = new HashMap();
 			String description = "";

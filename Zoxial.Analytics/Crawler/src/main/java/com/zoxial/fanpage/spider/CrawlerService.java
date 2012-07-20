@@ -60,9 +60,9 @@ public class CrawlerService {
 		try {
 			conn = FacebookPostFetcher.datasource.getConnection();
 			query = conn.createStatement().executeQuery(
-					"SELECT facebook_page_id FROM charts;");
+					"SELECT id FROM facebook_pages;");
 			while (query.next()) {
-				String facebook_page_id = query.getString("facebook_page_id");
+				String facebook_page_id = query.getString("id");
 				Properties p = new Properties();
 				p.put("pageToFetch", facebook_page_id);
 				p.put("token", token);
