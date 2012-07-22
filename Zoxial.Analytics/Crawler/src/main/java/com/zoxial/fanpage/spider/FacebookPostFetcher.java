@@ -48,6 +48,7 @@ public class FacebookPostFetcher extends FacebookFetchActor {
 	@Override
 	public void fetch(FacebookClient facebookClient, Properties p) {
 		String pageToFetch = p.getProperty("pageToFetch");
+		int fetchLimit = Integer.valueOf(p.getProperty("fetchLimit"));
 		log.info("Start Crawling page id: " + pageToFetch);
 		Connection<JsonObject> myFeed = facebookClient.fetchConnection(
 				pageToFetch + "/feed", JsonObject.class);
@@ -88,8 +89,8 @@ public class FacebookPostFetcher extends FacebookFetchActor {
 					conn = datasource.getConnection();
 
 					String sql = "INSERT INTO posts (id,comments,likes,shares,from_id,from_name,page_name,created_time,message,engagement,raw_post)"
-							+ " VALUES (?,?,?,?,?,?,?,?,?,(likes + shares + comments),?) ON DUPLICATE KEY UPDATE comments = ?, likes = ?, shares = ?, " +
-							"message = ?,raw_post = ?, engagement = likes + shares + comments";
+							+ " VALUES (?,?,?,?,?,?,?,?,?,(likes + shares + comments),?) ON DUPLICATE KEY UPDATE comments = ?, likes = ?, shares = ?, "
+							+ "message = ?,raw_post = ?, engagement = likes + shares + comments";
 
 					PreparedStatement createStatement = conn
 							.prepareStatement(sql);
@@ -107,10 +108,12 @@ public class FacebookPostFetcher extends FacebookFetchActor {
 					DateTime postTime = new DateTime(
 							dateFromLongFormat.getTime());
 
-					DateTime limit = new DateTime().plusDays(-7);
+					DateTime limit = new DateTime().plusDays(-fetchLimit);
 
 					if (postTime.isBefore(limit)) {
-						log.info("Cut execution for 7 days limit for page: http://www.facebook.com/"
+						log.info("Cut execution for "
+								+ fetchLimit
+								+ " days limit for page: http://www.facebook.com/"
 								+ pageToFetch);
 						return;
 					}

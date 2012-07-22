@@ -49,34 +49,21 @@ public class CrawlerService {
 				}).withRouter(new RoundRobinRouter(5)),
 				FacebookPostFetcher.class.getName());
 
+		final ActorRef cordinator = system.actorOf(new Props(
+				new UntypedActorFactory() {
+					public UntypedActor create() {
+						return new Cordinator(resourceFetcher);
+					}
+				}).withRouter(new RoundRobinRouter(1)), Cordinator.class
+				.getName());
+
 		Configuration configResource = ConfigResource.INSTANCE;
-		String token = configResource.getString("facebook.token");
 		int postFetcherPeriod = configResource
 				.getInt("fetcher.facebook.post.period");
-		
-		// Metadata persistence actor
-		Connection conn = null;
-		ResultSet query = null;
-		try {
-			conn = FacebookPostFetcher.datasource.getConnection();
-			query = conn.createStatement().executeQuery(
-					"SELECT id FROM facebook_pages;");
-			while (query.next()) {
-				String facebook_page_id = query.getString("id");
-				Properties p = new Properties();
-				p.put("pageToFetch", facebook_page_id);
-				p.put("token", token);
-				system.scheduler().schedule(Duration.create(0, TimeUnit.HOURS),
-						Duration.create(postFetcherPeriod, TimeUnit.HOURS),
-						resourceFetcher, new Fetch(p));
-			}
 
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally {
-			DbUtils.closeQuietly(query);
-			DbUtils.closeQuietly(conn);
-		}
+		system.scheduler().schedule(Duration.create(0, TimeUnit.HOURS),
+				Duration.create(postFetcherPeriod, TimeUnit.HOURS), cordinator,
+				new StartFetch());
 
 	}
 
