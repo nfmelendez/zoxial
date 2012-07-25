@@ -33,6 +33,10 @@ public class WicketApplication extends WebApplication {
 		MountedMapper indexedParamUrlCodingStrategy = new MountedMapper("/"
 				+ Analytics.class.getSimpleName(), Analytics.class);
 		this.mount(indexedParamUrlCodingStrategy);
+
+		MountedMapper moodle = new MountedMapper("/"
+				+ Moodle.class.getSimpleName(), Moodle.class);
+		this.mount(moodle);
 	}
 
 	@Override
@@ -40,7 +44,7 @@ public class WicketApplication extends WebApplication {
 		boolean isDeployMode = ConfigResource.INSTANCE
 				.getBoolean("application.mode.deploy");
 		if (isDeployMode) {
-			
+
 			return RuntimeConfigurationType.DEPLOYMENT;
 		} else {
 			return RuntimeConfigurationType.DEVELOPMENT;
