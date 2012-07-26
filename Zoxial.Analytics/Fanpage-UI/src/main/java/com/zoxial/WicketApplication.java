@@ -16,7 +16,7 @@ public class WicketApplication extends WebApplication {
 			.getLogger(WicketApplication.class);
 
 	public Class getHomePage() {
-		return Index.class;
+		return Moodle.class;
 	}
 
 	@Override
@@ -24,19 +24,19 @@ public class WicketApplication extends WebApplication {
 
 		log.info("STARTING ZOXIAL.COM.....");
 
-		this.mountPage(
-				"/" + Analytics.class.getSimpleName()/* + "/${chartid}" */,
-				Analytics.class);
+//		this.mountPage(
+//				"/",
+//				Moodle.class);
 
 		this.mountPage("/sitemap.xml", SiteMap.class);
 
-		MountedMapper indexedParamUrlCodingStrategy = new MountedMapper("/"
-				+ Analytics.class.getSimpleName(), Analytics.class);
-		this.mount(indexedParamUrlCodingStrategy);
-
-		MountedMapper moodle = new MountedMapper("/"
-				+ Moodle.class.getSimpleName(), Moodle.class);
-		this.mount(moodle);
+//		MountedMapper indexedParamUrlCodingStrategy = new MountedMapper("/"
+//				+ Analytics.class.getSimpleName(), Analytics.class);
+//		this.mount(indexedParamUrlCodingStrategy);
+//
+//		MountedMapper moodle = new MountedMapper("/"
+//				+ Moodle.class.getSimpleName(), Moodle.class);
+//		this.mount(moodle);
 	}
 
 	@Override
