@@ -46,7 +46,7 @@ import com.zoxial.domain.Engagement;
 public class Analytics extends WebPage {
 	private static final long serialVersionUID = 1L;
 
-	private static BasicDataSource datasource;
+	public static BasicDataSource datasource;
 
 	public static Map SITEMAP = new HashMap();
 

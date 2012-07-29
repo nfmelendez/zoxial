@@ -7,6 +7,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.zoxial.application.ConfigResource;
+import com.zoxial.ui.AddPageToRetrivePosts;
 import com.zoxial.ui.Analytics;
 import com.zoxial.ui.sitemap.SiteMap;
 
@@ -24,19 +25,19 @@ public class WicketApplication extends WebApplication {
 
 		log.info("STARTING ZOXIAL.COM.....");
 
-//		this.mountPage(
-//				"/",
-//				Moodle.class);
+		// this.mountPage(
+		// "/",
+		// Moodle.class);
 
 		this.mountPage("/sitemap.xml", SiteMap.class);
 
 		MountedMapper indexedParamUrlCodingStrategy = new MountedMapper("/"
 				+ Analytics.class.getSimpleName(), Analytics.class);
 		this.mount(indexedParamUrlCodingStrategy);
-//
-//		MountedMapper moodle = new MountedMapper("/"
-//				+ Moodle.class.getSimpleName(), Moodle.class);
-//		this.mount(moodle);
+
+		MountedMapper addPage = new MountedMapper("/Analytics/AddPage",
+				AddPageToRetrivePosts.class);
+		this.mount(addPage);
 	}
 
 	@Override

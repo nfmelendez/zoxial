@@ -62,7 +62,7 @@ public class CrawlerService {
 				.getInt("fetcher.facebook.post.period");
 
 		system.scheduler().schedule(Duration.create(0, TimeUnit.HOURS),
-				Duration.create(postFetcherPeriod, TimeUnit.HOURS), cordinator,
+				Duration.create(7, TimeUnit.SECONDS), cordinator,
 				new StartFetch());
 
 	}
