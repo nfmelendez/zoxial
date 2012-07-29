@@ -68,7 +68,7 @@ public class AddPageToRetrivePosts extends WebPage {
 	public void insertInBlogPoster(String id, String name) {
 		try {
 			// 3 horas
-			Thread.sleep(1000 * 60 * 60 * 3);
+			Thread.sleep(1000 * 60 * 60 * 24);
 		} catch (InterruptedException e1) {
 			throw new RuntimeException(e1);
 		}
