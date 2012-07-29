@@ -30,9 +30,9 @@ public class WicketApplication extends WebApplication {
 
 		this.mountPage("/sitemap.xml", SiteMap.class);
 
-//		MountedMapper indexedParamUrlCodingStrategy = new MountedMapper("/"
-//				+ Analytics.class.getSimpleName(), Analytics.class);
-//		this.mount(indexedParamUrlCodingStrategy);
+		MountedMapper indexedParamUrlCodingStrategy = new MountedMapper("/"
+				+ Analytics.class.getSimpleName(), Analytics.class);
+		this.mount(indexedParamUrlCodingStrategy);
 //
 //		MountedMapper moodle = new MountedMapper("/"
 //				+ Moodle.class.getSimpleName(), Moodle.class);
