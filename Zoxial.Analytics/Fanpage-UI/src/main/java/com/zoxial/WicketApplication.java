@@ -17,17 +17,13 @@ public class WicketApplication extends WebApplication {
 			.getLogger(WicketApplication.class);
 
 	public Class getHomePage() {
-		return Moodle.class;
+		return Analytics.class;
 	}
 
 	@Override
 	protected void init() {
 
 		log.info("STARTING ZOXIAL.COM.....");
-
-		// this.mountPage(
-		// "/",
-		// Moodle.class);
 
 		this.mountPage("/sitemap.xml", SiteMap.class);
 
