@@ -50,12 +50,9 @@ public class Cordinator extends UntypedActor {
 					Properties p = new Properties();
 					p.put("pageToFetch", facebook_page_id);
 					p.put("token", token);
-					if (isFirstTimeFetchPost(postCount)) {
-						p.put("fetchLimit", firstTimePeriod);
-					} else {
-						p.put("fetchLimit", fetchPeriod);
 
-					}
+					p.put("fetchLimit", fetchPeriod);
+
 					resourceFetcher.tell(new Fetch(p));
 					log.info(p);
 

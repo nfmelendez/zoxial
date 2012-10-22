@@ -12,6 +12,7 @@ import org.apache.commons.dbutils.DbUtils;
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
 
+
 import ar.com.blog.melendez.asyncrestfb.actor.FacebookFetchActor;
 
 import com.restfb.Connection;
@@ -88,8 +89,8 @@ public class FacebookPostFetcher extends FacebookFetchActor {
 				try {
 					conn = datasource.getConnection();
 
-					String sql = "INSERT INTO posts (id,comments,likes,shares,from_id,from_name,page_name,created_time,message,engagement,raw_post)"
-							+ " VALUES (?,?,?,?,?,?,?,?,?,(likes + shares + comments),?) ON DUPLICATE KEY UPDATE comments = ?, likes = ?, shares = ?, "
+					String sql = "INSERT INTO posts (id,comments,likes,shares,from_id,from_name,page_name,created_time,message,engagement,raw_post, yearweek)"
+							+ " VALUES (?,?,?,?,?,?,?,?,?,(likes + shares + comments),?, YEARWEEK(created_time)) ON DUPLICATE KEY UPDATE comments = ?, likes = ?, shares = ?, "
 							+ "message = ?,raw_post = ?, engagement = likes + shares + comments";
 
 					PreparedStatement createStatement = conn
