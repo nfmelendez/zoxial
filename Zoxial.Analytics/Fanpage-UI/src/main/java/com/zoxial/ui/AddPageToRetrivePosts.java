@@ -23,21 +23,8 @@ public class AddPageToRetrivePosts extends WebPage {
 		f.add(new TextField("name", new PropertyModel(this, "name")));
 		Button button = new Button("btn") {
 			public void onSubmit() {
-
 				insertPage();
-
-				Runnable r = new Runnable() {
-
-					public void run() {
-						insertInBlogPoster(new String(id), new String(name));
-					}
-				};
-				// Start thread to activate posting in the blogger poster
-				// but first the crawler moust gatther information then the
-				// blog poster active. Otherwise it will post with no
-				// information.
-				new Thread(r).start();
-
+				insertInBlogPoster(new String(id), new String(name));
 			}
 
 		};
@@ -66,14 +53,6 @@ public class AddPageToRetrivePosts extends WebPage {
 	}
 
 	public void insertInBlogPoster(String id, String name) {
-		try {
-			// 3 horas
-			Thread.sleep(1000 * 60 * 60 * 24);
-		} catch (InterruptedException e1) {
-			throw new RuntimeException(e1);
-		}
-		System.out.println("Start posting to blog: id: " + id + " name: "
-				+ name);
 		BasicDataSource datasource = Analytics.datasource;
 
 		Connection conn = null;
