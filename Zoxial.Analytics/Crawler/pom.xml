@@ -43,9 +43,9 @@
 			<version>1.4</version>
 		</dependency>
 		<dependency>
-  			<groupId>ar.com.blog.melendez.asyncrestfb</groupId>
-  			<artifactId>asyncrestfb</artifactId>
-  			<version>1.0</version>
+			<groupId>ar.com.blog.melendez.asyncrestfb</groupId>
+			<artifactId>asyncrestfb</artifactId>
+			<version>1.0</version>
 		</dependency>
 		<dependency>
 			<groupId>commons-dbcp</groupId>
@@ -64,13 +64,40 @@
 			<version>3.8.1</version>
 			<scope>test</scope>
 		</dependency>
+
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>jul-to-slf4j</artifactId>
+			<version>1.6.6</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-api</artifactId>
+			<version>1.6.6</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-log4j12</artifactId>
+			<version>1.6.6</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>jcl-over-slf4j</artifactId>
+			<version>1.6.6</version>
+		</dependency>
+
+
+
 	</dependencies>
 
 	<repositories>
-  		<repository>
-    			<id>zoxial</id>
-    			<url>http://mavenrepository-melendez.rhcloud.com/nexus/content/repositories/zoxial</url>
-  		</repository>
+		<repository>
+			<id>zoxial</id>
+			<url>http://mavenrepository-melendez.rhcloud.com/nexus/content/repositories/zoxial</url>
+		</repository>
 	</repositories>
 
 </project>
