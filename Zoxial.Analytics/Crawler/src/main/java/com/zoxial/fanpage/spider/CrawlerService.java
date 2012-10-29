@@ -1,13 +1,8 @@
 package com.zoxial.fanpage.spider;
 
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.Properties;
 import java.util.concurrent.TimeUnit;
 
 import org.apache.commons.configuration.Configuration;
-import org.apache.commons.dbutils.DbUtils;
 
 import akka.actor.ActorRef;
 import akka.actor.ActorSystem;
@@ -17,7 +12,7 @@ import akka.actor.UntypedActorFactory;
 import akka.routing.RoundRobinRouter;
 import akka.util.Duration;
 import ar.com.blog.melendez.asyncrestfb.Main;
-import ar.com.blog.melendez.asyncrestfb.messages.Fetch;
+
 
 /**
  * Service for Crawling Facebook. It configs the akka Routers and Actors for
@@ -30,6 +25,9 @@ import ar.com.blog.melendez.asyncrestfb.messages.Fetch;
  * 
  */
 public class CrawlerService {
+
+	public static ActorRef REPORT_ACTOR;
+	public static ActorRef MAIL_ACTOR;
 
 	/**
 	 * The method is called from the mvn exec:java and that is configured is the
@@ -57,6 +55,21 @@ public class CrawlerService {
 				}).withRouter(new RoundRobinRouter(1)), Cordinator.class
 				.getName());
 
+		REPORT_ACTOR = system.actorOf(new Props(new UntypedActorFactory() {
+			public UntypedActor create() {
+				return new ReportActor();
+			}
+		}).withRouter(new RoundRobinRouter(1)),
+				ReportActor.class.getSimpleName());
+
+		MAIL_ACTOR = system
+				.actorOf(new Props(new UntypedActorFactory() {
+					public UntypedActor create() {
+						return new MailActor();
+					}
+				}).withRouter(new RoundRobinRouter(1)),
+						MailActor.class.getSimpleName());
+
 		Configuration configResource = ConfigResource.INSTANCE;
 		int postFetcherPeriod = configResource
 				.getInt("fetcher.facebook.post.period");
@@ -64,6 +77,9 @@ public class CrawlerService {
 		system.scheduler().schedule(Duration.create(0, TimeUnit.HOURS),
 				Duration.create(postFetcherPeriod, TimeUnit.HOURS), cordinator,
 				new StartFetch());
+
+		system.scheduler().schedule(Duration.create(1, TimeUnit.MINUTES),
+				Duration.create(4, TimeUnit.HOURS), REPORT_ACTOR, "report");
 
 	}
 

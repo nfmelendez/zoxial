@@ -12,7 +12,6 @@ import org.apache.commons.dbutils.DbUtils;
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
 
-
 import ar.com.blog.melendez.asyncrestfb.actor.FacebookFetchActor;
 
 import com.restfb.Connection;
@@ -131,7 +130,14 @@ public class FacebookPostFetcher extends FacebookFetchActor {
 					createStatement.setString(14, message);
 					createStatement.setString(15, post.toString());
 
-					createStatement.execute();
+					int returnCode = createStatement.executeUpdate();
+
+					if (returnCode == 1) {
+						CrawlerService.REPORT_ACTOR.tell("new");
+					} else if (returnCode == 2) {
+						CrawlerService.REPORT_ACTOR.tell("modified");
+
+					}
 
 				} catch (SQLException e) {
 					log.error(e);
